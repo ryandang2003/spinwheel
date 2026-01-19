@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spin Wheel</title>
+<style>
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #111;
+    margin: 0;
+}
+canvas {
+    background: #fff;
+    border-radius: 50%;
+}
+button {
+    position: absolute;
+    bottom: 40px;
+    padding: 14px 28px;
+    font-size: 18px;
+    border: none;
+    border-radius: 25px;
+    background: #ff4757;
+    color: white;
+}
+</style>
+</head>
+
+<body>
+<canvas id="wheel" width="300" height="300"></canvas>
+<button onclick="spin()">SPIN</button>
+
+<script>
+const options = [
+  "🍕 Pizza",
+  "🍔 Burger",
+  "🍣 Sushi",
+  "🌮 Tacos",
+  "🍜 Noodles",
+  "🥗 Salad"
+];
+
+const colors = ["#ff7675","#74b9ff","#55efc4","#ffeaa7","#a29bfe","#fd79a8"];
+const canvas = document.getElementById("wheel");
+const ctx = canvas.getContext("2d");
+const radius = canvas.width / 2;
+let angle = 0;
+
+function drawWheel() {
+  const slice = 2 * Math.PI / options.length;
+  options.forEach((text, i) => {
+    ctx.beginPath();
+    ctx.moveTo(radius, radius);
+    ctx.arc(radius, radius, radius, slice * i + angle, slice * (i + 1) + angle);
+    ctx.fillStyle = colors[i % colors.length];
+    ctx.fill();
+
+    ctx.save();
+    ctx.translate(radius, radius);
+    ctx.rotate(slice * i + slice / 2 + angle);
+    ctx.textAlign = "right";
+    ctx.fillStyle = "#000";
+    ctx.font = "16px sans-serif";
+    ctx.fillText(text, radius - 10, 5);
+    ctx.restore();
+  });
+}
+
+function spin() {
+  let spinTime = 3000;
+  let start = performance.now();
+  let spinAngle = Math.random() * 2000 + 2000;
+
+  function animate(now) {
+    let elapsed = now - start;
+    if (elapsed < spinTime) {
+      angle += (spinAngle / spinTime) * 0.05;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawWheel();
+      requestAnimationFrame(animate);
+    } else {
+      angle %= 2 * Math.PI;
+      const index = Math.floor(options.length - (angle / (2 * Math.PI)) * options.length) % options.length;
+      alert("Result: " + options[index]);
+    }
+  }
+  requestAnimationFrame(animate);
+}
+
+drawWheel();
+</script>
+</body>
+</html>
