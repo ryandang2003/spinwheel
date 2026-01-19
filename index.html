@@ -65,10 +65,10 @@ function drawWheel() {
     ctx.save();
     ctx.translate(radius, radius);
     ctx.rotate(slice * i + slice / 2 + angle);
-    ctx.textAlign = "right";
+    ctx.textAlign = "center";
     ctx.fillStyle = "#000";
     ctx.font = "16px sans-serif";
-    ctx.fillText(text, radius - 10, 5);
+    ctx.fillText(text.name, radius / 1.5, 0);
     ctx.restore();
   });
 }
@@ -88,7 +88,8 @@ function spin() {
     } else {
       angle %= 2 * Math.PI;
       const index = Math.floor(options.length - (angle / (2 * Math.PI)) * options.length) % options.length;
-      alert("Result: " + options[index]);
+      alert("Result: " + options[index].name);
+        showResult(index);
     }
   }
   requestAnimationFrame(animate);
