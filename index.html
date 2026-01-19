@@ -35,12 +35,9 @@ button {
 
 <script>
 const options = [
-  "🍕 Pizza",
-  "🍔 Burger",
-  "🍣 Sushi",
-  "🌮 Tacos",
-  "🍜 Noodles",
-  "🥗 Salad"
+  { name: "Prize 1", img: "img/prize1.png" },
+  { name: "Prize 2", img: "img/prize2.png" },
+  { name: "Prize 3", img: "img/prize3.png" }
 ];
 
 const colors = ["#ff7675","#74b9ff","#55efc4","#ffeaa7","#a29bfe","#fd79a8"];
@@ -90,6 +87,15 @@ function spin() {
   requestAnimationFrame(animate);
 }
 
+function showResult(selectedIndex) {
+  const resultText = document.getElementById("resultText");
+  const resultImage = document.getElementById("resultImage");
+
+  resultText.textContent = "You got: " + options[selectedIndex].name;
+  resultImage.src = options[selectedIndex].img;
+  resultImage.style.display = "block";
+}    
+
 drawWheel();
 </script>
 </body>
@@ -99,3 +105,10 @@ drawWheel();
   <h2 id="resultText"></h2>
   <img id="resultImage" style="display:none; width:200px; margin-top:10px;">
 </div>
+
+<style>
+  img {
+    max-width: 80%;
+    height: auto;
+  }
+</style>
